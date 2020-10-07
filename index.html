@@ -1,0 +1,228 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+    <!-- Materialize Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+
+
+    <title>The Home Salon App</title>
+</head>
+<body>
+
+    <nav class="navbar-fixed transparent z-depth-0">
+        <div class="nav-wrapper container">
+          <a href="#!" class="brand-logo">Home Salon</a>
+          <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+          <ul class="right hide-on-med-and-down">
+            <li><a href="#aboutus">About Us</a></li>
+            <li><a href="#stylists">Our Stylists</a></li>
+            <li><a href="#policy">Site Policy</a></li>
+            <li><a href="#signup">SignUp</a></li>
+            <li><a href="#" class="btn black">Login</a></li>
+          </ul>
+        </div>
+    </nav>
+    
+    <ul class="sidenav" id="mobile-demo">
+        <br>
+        <br>
+        <li><a href="#aboutus">About Us</a></li>
+        <li><a href="#stylists">Our Stylists</a></li>
+        <li><a href="#policy">Site Policy</a></li>
+        <li><a href="#signup">SignUp</a></li>
+        <li><a href="#" class="btn black">Login</a></li>
+    </ul>
+
+
+    <div class="slider">
+    <ul class="slides">
+        <li>
+        <img src="img/banner1.jpg"> <!-- random image -->
+        <div class="caption center-align">
+            <h1>Do you need a stylist?</h1>
+            <h5 class="light grey-text text-lighten-3">Book an appointment today!</h5>
+            <a class="waves-effect waves-light btn-large white black-text bold z-depth-0">Book Now!</a>
+        </div>
+        </li>
+        <li>
+        <img src="img/banner2.jpg"> <!-- random image -->
+        <div class="caption left-align">
+            <h1>Do you need a stylist?</h1>
+            <h5 class="light grey-text text-lighten-3">Book an appointment today!</h5>
+            <a class="waves-effect waves-light btn-large white black-text bold z-depth-0">Book Now!</a>
+        </div>
+        </li>
+        <li>
+        <img src="img/banner4.jpg"> <!-- random image -->
+        <div class="caption right-align">
+            <h1>Do you need a stylist?</h1>
+            <h5 class="light text-lighten-3">Book an appointment today!</h5>
+            <a class="waves-effect waves-light btn-large white black-text bold z-depth-0">Book Now!</a>
+        </div>
+        </li>
+    </ul>
+    </div>
+
+
+
+    <div class="container" id="stylists">
+        <h2>Our Stylists</h2>
+
+        <div class="row">
+
+            <div class="col s12 m4">
+              <div class="card">
+                <div class="card-image">
+                  <img src="img/hair_stylist1.jpg">
+                  <span class="card-title">Hair</span>
+                </div>
+                <div class="card-content">
+                  <p>I am a very simple card. I am good at containing small bits of information.
+                  I am convenient because I require little markup to use effectively.</p>
+                </div>
+                <div class="card-action">
+                  <a href="#">browse</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col s12 m4">
+              <div class="card">
+                <div class="card-image">
+                  <img src="img/makeup_stylist1.jpg">
+                  <span class="card-title">Makeup</span>
+                </div>
+                <div class="card-content">
+                  <p>I am a very simple card. I am good at containing small bits of information.
+                  I am convenient because I require little markup to use effectively.</p>
+                </div>
+                <div class="card-action">
+                  <a href="#">browse</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col s12 m4">
+              <div class="card">
+                <div class="card-image">
+                  <img src="img/skin_care.jpg">
+                  <span class="card-title">Skin Care</span>
+                </div>
+                <div class="card-content">
+                  <p>I am a very simple card. I am good at containing small bits of information.
+                  I am convenient because I require little markup to use effectively.</p>
+                </div>
+                <div class="card-action">
+                  <a href="#">browse more</a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+    </div>
+
+    <div class="container" id="aboutus">
+        <h2>About Us</h2>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus commodi repellat mollitia temporibus laborum, libero aliquam ipsam maxime. Dolore ipsam doloribus saepe doloremque sapiente veniam quis, beatae consectetur error deserunt?</p>
+    </div>
+    
+    <div class="parallax-container container">
+        <div class="parallax"><img src="img/salon2.jpeg"></div>
+    </div>
+
+    <div class="container" id="signup">
+
+        <h2>Sign Up</h2>
+        <div class="row">
+
+            <div class="card med col s12 m6">
+            <!-- Card Content -->
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator " src="img/imcustomer.jpeg">
+                </div>
+                <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">I'm a Customer<i class="material-icons right">more_vert</i></span>
+                <p><a href="#" class="btn">Sign up</a></p>
+                </div>
+                <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
+                <p>Here is some more information about this product that is only revealed once clicked on.</p>
+                </div>
+            </div>
+    
+            <div class="card med col s12 m6">
+            <!-- Card Content -->
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="img/imstylist.jpeg">
+                </div>
+                <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">I'm a Stylist<i class="material-icons right">more_vert</i></span>
+                <p><a href="#" class="btn">sign up</a></p>
+                </div>
+                <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
+                <p>Here is some more information about this product that is only revealed once clicked on.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <div class="parallax-container container">
+        <div class="parallax"><img src="img/salon1.jpeg"></div>
+    </div>
+    
+    <div class="container" id="policy">
+        <h2>Our Site Policy</h2>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus commodi repellat mollitia temporibus laborum, libero aliquam ipsam maxime. Dolore ipsam doloribus saepe doloremque sapiente veniam quis, beatae consectetur error deserunt?</p>
+    </div>
+
+    <div>
+        <p class="center">
+            <a href="#" class="black-text">Back to top</a>
+        </p>
+    </div>
+
+
+    <footer class="page-footer">
+        <div class="container black-text">
+          <div class="row">
+            <div class="col l6 s12">
+              <h5 class="white-text black">Contact Us</h5>
+              <p class="white-text text-lighten-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex, quos soluta quae assumenda dicta consequatur id necessitatibus cumque excepturi libero repellat similique culpa veniam sit voluptatem modi itaque nostrum. Quos?</p>
+            </div>
+            <div class="col l4 offset-l2 s12">
+              <h5 class="white-text black">Follow Us On</h5>
+              <ul>
+                <li><a class="white-text text-lighten-3" href="#!">Facebook</a></li>
+                <li><a class="white-text text-lighten-3" href="#!">Instagram</a></li>
+                <li><a class="white-text text-lighten-3" href="#!">Tweeter</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright black">
+          <div class="container center white-text">
+          © 2020 Home Salon and The SuperFancyTeam
+          </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+
+</body>
+</html>
