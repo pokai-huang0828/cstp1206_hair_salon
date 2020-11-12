@@ -2,30 +2,30 @@
 
 class User{
 
-    protected string $userID;
-    protected string $password;
-    protected string $role;
-    protected string $firstName;
-    protected string $lastName;
-    protected string $profilePic;
-    protected string $signUpDate;
-    protected string $gender;
-    protected string $phoneNumber;
-    protected string $email;
+    private string $userID;
+    private string $password;
+    private string $role;
+    private string $firstName;
+    private string $lastName;
+    private string $profilePic;
+    private string $signUpDate;
+    private string $gender;
+    private string $phoneNumber;
+    private string $email;
 
     function __construct(
-        string $aUserID,
-        string $aPassword,
-        string $aRole,
-        string $aFirstName,
-        string $aLastName,
-        string $aProfilePic,
-        string $aSignUpDate,
-        string $aGender,
-        string $aPhoneNumber,
-        string $aEmail
+        string $aUserID ="",
+        string $aPassword = "",
+        string $aRole = "",
+        string $aFirstName = "",
+        string $aLastName = "",
+        string $aProfilePic = "",
+        string $aSignUpDate = "",
+        string $aGender = "",
+        string $aPhoneNumber = "",
+        string $aEmail = ""
     ){
-        $this->userID = $auserID;
+        $this->userID = $aUserID;
         $this->password = $aPassword;
         $this->role = $aRole;
         $this->firstName = $aFirstName;
@@ -37,6 +37,7 @@ class User{
         $this->email = $aEmail;
     }
 
+    // Getters
     public function getUserID(){
         return $this->userID;
     }
@@ -67,6 +68,38 @@ class User{
     public function getProfilePic(){
         return $this->profilePic;
     }
+
+        // Setters
+        public function setUserID($aUserID){
+            $this->userID = $aUserID;
+        }
+        public function setPassword($aPassword){
+            $this->password = $aPassword;
+        }
+        public function setFirstName($aFirstName){
+            $this->firstName = $aFirstName;
+        }
+        public function setLastName($aLastName){
+            $this->lastName = $aLastName;
+        }
+        public function setRole($aRole){
+            $this->role = $aRole;
+        }
+        public function setGender($aGender){
+            $this->gender = $aGender;
+        }
+        public function setPhoneNumber($aPhoneNumber){
+            $this->phoneNumber = $aPhoneNumber;
+        }
+        public function setEmail($aEmail){
+            $this->email = $aEmail;
+        }
+        public function setSignUpDate($aSignUpDate){
+            $this->signUpDate = $aSignUpDate;
+        }
+        public function setProfilePic($aProfilePic){
+            $this->profilePic = $aProfilePic;
+        }
 
 
 }
