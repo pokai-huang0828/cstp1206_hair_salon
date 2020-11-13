@@ -4,7 +4,7 @@ require_once("../config.inc.php");
 
 require_once("../entities/Stylist.class.php");
 require_once("../entities/User.class.php");
-require_once("../entities/StylistList.class.php");
+// require_once("../entities/StylistList.class.php");
 
 require_once("FileService.class.php");
 require_once("StylistParser.class.php");
