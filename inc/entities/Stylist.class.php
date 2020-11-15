@@ -2,7 +2,7 @@
 
 require_once("User.class.php");
 
-class Stylist{
+class Stylist {
 
     private string $userID;
     private int $professionalExperience;

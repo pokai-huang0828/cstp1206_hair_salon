@@ -1,43 +1,39 @@
-<?php  
+<?php 
 
-class StylistDAO {
+class CustomerDAO {
 
-    // List of Stylists
-    private static $stylists = array();
+    // List of Customers
+    private static $customers = array();
     private static $users = array();
-    
-    // Merging Stylist and User
+
+    // Merged Customer and User list
     private static $mergedList = array();
-    
-    // Make a function to get an updated list of stylist from the CSV file
-    static function refreshStylists(){
-        
-        $stylist_data_path = realpath("../../data/stylist.data.csv");
+
+    // Make a function to get an updated list of customer from the CSV file
+    static function refreshCustomers(){
+
+        $customer_data_path = realpath("../../data/customer.data.csv");
         $user_data_path = realpath("../../data/user.data.csv");
 
-        $stylist_content = FileService::readfile($stylist_data_path);
-        self::$stylists = StylistParser::parseStylists($stylist_content);
+        $customer_content = FileService::readfile($customer_data_path);
+        self::$customers = CustomerParser::parseCustomers($customer_content);
 
         $user_content = FileService::readfile($user_data_path);
         self::$users = UserParser::parseUser($user_content);
 
-        // merging stylist_obj and user_obj into a std_obj
-        for($i=0; $i < count(self::$users); $i++){
+        // merging customer-pbj and user_obj into a std_obj
 
-            foreach(self::$stylists as $stylist){
+        for($i=0; $i < count(self::$users); $i++) {
 
-                if(self::$users[i]->getUserID() == $stylist->getUserID()){
+            foreach(self::$customers as $customer){
+
+                if(self::$users[$i]->getUserID() == $customer->getUserID()){
 
                     $merged_obj = new stdClass;
 
-                    // Stylist Info
-                    $merged_obj->userID = $stylist->getUserID();
-                    $merged_obj->professionalExperience = $stylist->getProfessionalExperience();
-                    $merged_obj->rating = $stylist->getRating();
-                    $merged_obj->serviceLocation = $stylist->getServiceLocation();
-                    $merged_obj->category = $stylist->getCategory();
-                    $merged_obj->priceList = $stylist->getPriceList();
-                    $merged_obj->portfolio = $stylist->getPortfolio();
+                    // Customer Info
+                    $merged_obj->userID = $customer->getUserID();
+                    $merged_obj->address = $customer->getAddress();
 
                     // User Info
                     $merged_obj->password = self::$users[$i]->getPassword();
@@ -56,48 +52,53 @@ class StylistDAO {
             }
 
         }
-        
-    }
-
-    public static function getStylists(){
-
-        self::refreshStylists();
-
-        return StylistDAO::$mergedList;
 
     }
-    
-    public static function getStylistById($id){
-        
-        self::refreshStylists();
-        
-        foreach(self::$mergedList as $merged_obj){
+
+    public static function getCustomers(){
+
+        self::refreshCustomers();
+
+        return self::$mergedList;
+
+    }
+
+    public static function getCustomerById($id){
+
+        self::refreshCustomers();
+
+        foreach (self::$mergedList as $merged_obj){
 
             if($merged_obj->userID == $id){
                 return $merged_obj;
             }
-            
+
         }
+
+        $error = new stdClass;
+        $error->error = "No user with ID:".$id;
+
+        return $error;
 
     }
 
-    public static function updateStylists($profile){
+    public static function updateCustomers($profile){
 
-        StylistDAO::refreshStylists();
+        self::refreshCustomers;
 
-        // Modifying stylist data
-        foreach(StylistDAO::$stylists as $stylist){
-            if($stylist->getUserID() == $profile->userID){
-                foreach($profile as $prop => $value){
-                    if(property_exists($stylist, $prop)){
-                        self::setStylistProperty($stylist, $prop, $value);
+        //Modifying Customer data
+        foreach(self::$customers as $customer){
+            if($customer->getUserID() == $profile->userID){
+                foreach($profile as $prop => $value) {
+                    if(property_exists($customer, $prop)){
+                        self::setCustomerProperty($customer, $prop, $value);
                     }
                 }
             }
         }
 
         // Modifying user data
-        foreach(StylistDAO::$users as $user){
+        foreach(self::$users as $user){
             if($user->getUserID() == $profile->userID){
                 foreach($profile as $prop => $value){
                     if(property_exists($user, $prop)){
@@ -107,24 +108,19 @@ class StylistDAO {
             }
         }
 
-        // convert each stylist into string
-        $stylist_str = "userID,professionalExperience,rating,serviceLocation,category,priceList,portfolio";
+        // Convert each customer into string
+        $customer_str = "userID,address";
 
-        foreach(StylistDAO::$stylists as $s){
-            $stylist_str .= "\n".
-            $s->getUserID().",".
-            $s->getProfessionalExperience().",".
-            $s->getRating().",".
-            $s->getServiceLocation().",".
-            $s->getCategory().",".
-            $s->getPriceList().",".
-            $s->getPortfolio();
+        foreach(self::$customers as $c){
+            $customer_str .= "\n".
+            $c->getUserID().",".
+            $c->getAddress();
         }
 
         // convert each user into string
         $user_str = "userID,password,role,firstName,lastName,profilePic,signUpDate,gender,phoneNumber,email";
 
-        foreach(StylistDAO::$users as $u){
+        foreach(self::$users as $u){
             $user_str .= "\n".
             $u->getUserID().",".
             $u->getPassword().",".
@@ -139,40 +135,26 @@ class StylistDAO {
         }
 
         // paths to the csv files
-        $stylist_data_path = realpath("../../data/stylist.data.csv");
+        $customer_data_path = realpath("../../data/customer.data.csv");
         $user_data_path = realpath("../../data/user.data.csv");
         
         // save them in file
-        FileService::writeFile($stylist_data_path, $stylist_str);
+        FileService::writeFile($customer_data_path, $customer_str);
         FileService::writeFile($user_data_path, $user_str);
 
         return $profile;
+
     }
 
-    private static function setStylistProperty(&$stylist, $property, $value){
+    private static function setCustomerProperty(&$customer, $property, $value){
         
         switch ($property){
 
             case "userID":
-                $stylist->setUserID($value);
+                $customer->setUserID($value);
             break;
-            case "professionalExperience":
-                $stylist->setProfessionalExperience($value);
-            break;
-            case "rating":
-                $stylist->setRating($value);
-            break;
-            case "serviceLocation":
-                $stylist->setServiceLocation($value);
-            break;
-            case "category":
-                $stylist->setCategory($value);
-            break;
-            case "priceList":
-                $stylist->setPriceList($value);
-            break;
-            case "portfolio":
-                $stylist->setPortfolio($value);
+            case "address":
+                $customer->setAddress($value);
             break;
 
         }
@@ -217,7 +199,7 @@ class StylistDAO {
 
     }
 
-
 }
+
 
 ?>

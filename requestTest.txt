@@ -1,7 +1,6 @@
-POST http://localhost/inc/utilities/SignInController.php HTTP/1.1
+GET http://localhost/inc/utilities/CustomerController.php?userID=1 HTTP/1.1
 content-type: application/json
 
 {
-    "email": "pokai@email.com",
-    "password": "123"
+    "userID": "1"
 }
