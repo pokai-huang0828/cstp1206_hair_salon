@@ -84,7 +84,7 @@ class CustomerDAO {
 
     public static function updateCustomers($profile){
 
-        self::refreshCustomers;
+        self::refreshCustomers();
 
         //Modifying Customer data
         foreach(self::$customers as $customer){

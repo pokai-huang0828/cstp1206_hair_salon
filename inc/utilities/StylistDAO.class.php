@@ -26,7 +26,7 @@ class StylistDAO {
 
             foreach(self::$stylists as $stylist){
 
-                if(self::$users[i]->getUserID() == $stylist->getUserID()){
+                if(self::$users[$i]->getUserID() == $stylist->getUserID()){
 
                     $merged_obj = new stdClass;
 
