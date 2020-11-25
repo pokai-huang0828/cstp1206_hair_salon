@@ -95,7 +95,7 @@ class CustomerDAO {
         try{
             $result = self::$_db->execute();
             // echo self::$_db->rowCount();
-            return $result;
+            return $profile;
 
         } catch(PDOException $e){
             return self::returnError($e);
