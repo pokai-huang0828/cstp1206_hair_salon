@@ -63,7 +63,7 @@ class CustomerDAO {
 
         UPDATE customers
         SET 
-        address = :address,
+        address = :address
         WHERE userID = :userID;
 
         UPDATE users
@@ -93,8 +93,9 @@ class CustomerDAO {
         self::$_db->bind(":address", $profile->address);
 
         try{
-            self::$_db->execute();
-            return $profile;
+            $result = self::$_db->execute();
+            // echo self::$_db->rowCount();
+            return $result;
 
         } catch(PDOException $e){
             return self::returnError($e);
