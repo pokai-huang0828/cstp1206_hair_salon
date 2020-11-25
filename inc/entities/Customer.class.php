@@ -1,17 +1,19 @@
 <?php 
 
-class Customer {
+require_once("User.class.php");
 
-    private string $userID;
+class Customer extends User{
+
+    protected string $userID;
     private string $address;
 
-    function __contruct(
-        string $aUserID = "",
-        string $aAddress = ""
-    ){
-        $this->userID = $aUserID;
-        $this->address = $aAddress;
-    }
+    // function __contruct(
+    //     string $aUserID = "",
+    //     string $aAddress = ""
+    // ){
+    //     $this->userID = $aUserID;
+    //     $this->address = $aAddress;
+    // }
 
     public function getUserID(){
         return $this->userID;

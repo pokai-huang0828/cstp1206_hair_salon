@@ -1,16 +1,16 @@
-<?php  
+<?php   
 
 require_once("../config.inc.php");
 
 require_once("../entities/Customer.class.php");
 require_once("../entities/User.class.php");
 
-require_once("FileService.class.php");
-require_once("CustomerParser.class.php");
+require_once("PDOservice.class.php");
 require_once("CustomerDAO.class.php");
-
-require_once("./UserParser.class.php");
 require_once("./UserDAO.class.php"); 
+
+// Initialize PDO
+CustomerDAO::init();
 
 // Get Request Payload
 $requestData = json_decode(file_get_contents("php://input"));
@@ -18,7 +18,6 @@ $requestData = json_decode(file_get_contents("php://input"));
 // var_dump($requestData);
 
 // REST API HTTP Verbs
-
 switch($_SERVER["REQUEST_METHOD"]){
 
     case "GET":
@@ -46,7 +45,7 @@ switch($_SERVER["REQUEST_METHOD"]){
 
     case "PUT":
         // the payload should come in with the customer properties + customer ID
-        $updatedProfile = CustomerDAO::updateCustomers($requestData);
+        $updatedProfile = CustomerDAO::updateCustomer($requestData);
         echo json_encode($updatedProfile);
     break;
 

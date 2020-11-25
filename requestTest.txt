@@ -1,6 +1,0 @@
-PUT http://localhost/inc/utilities/StylistController.php HTTP/1.1
-content-type: application/json
-
-{
-    "userID": "1"
-}

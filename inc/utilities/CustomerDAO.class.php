@@ -1,203 +1,248 @@
-<?php 
+<?php  
 
 class CustomerDAO {
 
-    // List of Customers
-    private static $customers = array();
-    private static $users = array();
+    private static $_db;
 
-    // Merged Customer and User list
-    private static $mergedList = array();
-
-    // Make a function to get an updated list of customer from the CSV file
-    static function refreshCustomers(){
-
-        $customer_data_path = realpath("../../data/customer.data.csv");
-        $user_data_path = realpath("../../data/user.data.csv");
-
-        $customer_content = FileService::readfile($customer_data_path);
-        self::$customers = CustomerParser::parseCustomers($customer_content);
-
-        $user_content = FileService::readfile($user_data_path);
-        self::$users = UserParser::parseUser($user_content);
-
-        // merging customer-pbj and user_obj into a std_obj
-
-        for($i=0; $i < count(self::$users); $i++) {
-
-            foreach(self::$customers as $customer){
-
-                if(self::$users[$i]->getUserID() == $customer->getUserID()){
-
-                    $merged_obj = new stdClass;
-
-                    // Customer Info
-                    $merged_obj->userID = $customer->getUserID();
-                    $merged_obj->address = $customer->getAddress();
-
-                    // User Info
-                    $merged_obj->password = self::$users[$i]->getPassword();
-                    $merged_obj->lastName = self::$users[$i]->getLastName();
-                    $merged_obj->firstName = self::$users[$i]->getFirstName();
-                    $merged_obj->role = self::$users[$i]->getRole();
-                    $merged_obj->gender = self::$users[$i]->getGender();
-                    $merged_obj->phoneNumber = self::$users[$i]->getPhoneNumber();
-                    $merged_obj->email = self::$users[$i]->getEmail();
-                    $merged_obj->signUpDate = self::$users[$i]->getSignUpDate();
-                    $merged_obj->profilePic = self::$users[$i]->getProfilePic();
-
-                    self::$mergedList[] = $merged_obj;
-
-                }
-            }
-
-        }
-
+    public static function init(){
+        self::$_db = new PDOService("Customer");
     }
-
+    
     public static function getCustomers(){
 
-        self::refreshCustomers();
+        $sql = "SELECT * FROM users
+                JOIN customers USING(userID);";
 
-        return self::$mergedList;
+        //Query
+        self::$_db->query($sql);
+
+        //Exec
+        self::$_db->execute();
+
+        // Results
+        $results = self::$_db->resultSet();
+
+        // Return 
+        return self::convertCustomersToStdClass($results);
 
     }
-
+    
     public static function getCustomerById($id){
 
-        self::refreshCustomers();
+        $sql = "SELECT * From users
+                JOIN customers USING(userID)
+                WHERE userID = :id";
 
-        foreach (self::$mergedList as $merged_obj){
+        self::$_db->query($sql);
+        self::$_db->bind(":id", $id);
 
-            if($merged_obj->userID == $id){
-                return $merged_obj;
+        try{
+
+            self::$_db->execute();
+            $result = self::$_db->singleResult();
+
+            if($result){
+                return self::convertCustomersToStdClass($result);
+            }else {
+                $error = new stdClass;
+                $error->error = "No customer with this id.";
+                return $error;
             }
+
+        }catch (Exception $e){
+            return self::returnError($e);
+        }
+
+
+    }
+
+    public static function updateCustomer($profile){
+
+        $sql = "
+        START TRANSACTION;
+
+        UPDATE customers
+        SET 
+        address = :address,
+        WHERE userID = :userID;
+
+        UPDATE users
+        SET
+        password = :password,
+        firstName = :firstName,
+        lastName = :lastName,
+        profilePic = :profilePic,
+        gender = :gender,
+        phoneNumber = :phoneNumber,
+        email = :email
+        WHERE userID = :userID;
+
+        COMMIT;";
+
+        self::$_db->query($sql);
+
+        self::$_db->bind(":userID", $profile->userID);
+        self::$_db->bind(":firstName", $profile->firstName);
+        self::$_db->bind(":lastName", $profile->lastName);
+        self::$_db->bind(":password", $profile->password);
+        self::$_db->bind(":phoneNumber", $profile->phoneNumber);
+        self::$_db->bind(":email", $profile->email);
+        self::$_db->bind(":gender", $profile->gender);
+        self::$_db->bind(":profilePic", $profile->profilePic);
+
+        self::$_db->bind(":address", $profile->address);
+
+        try{
+            self::$_db->execute();
+            return $profile;
+
+        } catch(PDOException $e){
+            return self::returnError($e);
+        }
+
+    }
+
+    public static function addCustomer($user){
+
+        // first add record to user, then retrive id
+        $sql = "
+        INSERT INTO users
+        (password, role, firstName, lastName, 
+         signUpDate, gender, 
+        phoneNumber, email)
+        VALUES
+        (:password, :role, :firstName, :lastName, 
+        :signUpDate, :gender, 
+        :phoneNumber, :email);
+        ";
+
+        self::$_db->query($sql);
+
+        self::$_db->bind(":password", $user->getPassword());
+        self::$_db->bind(":role", $user->getRole());
+        self::$_db->bind(":firstName", $user->getFirstName());
+        self::$_db->bind(":lastName", $user->getLastName());
+        // self::$_db->bind(":profilePic", " ");
+        self::$_db->bind(":signUpDate", $user->getSignUpDate());
+        self::$_db->bind(":gender", $user->getGender());
+        self::$_db->bind(":phoneNumber", $user->getPhoneNumber());
+        self::$_db->bind(":email", $user->getEmail());
+
+        try{
+
+            self::$_db->execute();
+
+            // return userID 
+            $userID = self::$_db->lastInsertKey();
+
+            // create stylist record
+            $sql = 'INSERT INTO customers(userID) 
+                    values (:userID);';
+
+            self::$_db->query($sql);
+
+            self::$_db->bind(":userID", $userID);
+
+            self::$_db->execute();
+
+            // set the userID the user obj and return 
+            $user->setUserID($userID);
+
+            // var_dump($user);
+
+            return self::convertUserToStdClass($user);
+
+        } catch (Exception $e){
+            if($e->getCode() == '23000') {
+                $error = new stdClass;
+                $error->error = "This email has been registered.";
+                return $error;
+            } else{
+                return self::returnError($e);
+            }
+        }
+
+    }
+
+    private static function convertCustomersToStdClass($results){
+
+        if(is_array($results)){
+            $std_customers = array();
+
+            foreach($results as $customer){
+                $s = new StdClass;
+    
+                self::copyCustomerPropertiesOver($customer, $s);
+    
+                $std_customers[] = $s;
+            }
+
+            return $std_customers;
+
+        } else{
+
+            $s = new StdClass;
+            self::copyCustomerPropertiesOver($results, $s);
+            return $s;
 
         }
 
+    }
+
+    private static function copyCustomerPropertiesOver($customer, $std_customer){
+        
+        // User info
+        $std_customer->userID = $customer->getUserID();
+        $std_customer->password = $customer->getPassword();
+        $std_customer->role = $customer->getRole();
+        $std_customer->firstName = $customer->getFirstName();
+        $std_customer->lastName = $customer->getLastName();
+        $std_customer->profilePic = $customer->getProfilePic();
+        $std_customer->signUpDate = $customer->getSignUpDate();
+        $std_customer->gender = $customer->getGender();
+        $std_customer->phoneNumber = $customer->getPhoneNumber();
+        $std_customer->email = $customer->getEmail();
+
+        // Customer info
+        $std_customer->address = $customer->getAddress();
+
+    }
+
+    // User convert StdUser
+
+    private static function convertUserToStdClass($result){
+
+        $s = new StdClass;
+        $s = self::copyUserPropertiesOver($result, $s);
+        return $s;
+
+    }
+
+    private static function copyUserPropertiesOver($user, $std_user){
+        
+        // User info
+        $std_user->userID = $user->getUserID();
+        $std_user->password = $user->getPassword();
+        $std_user->role = $user->getRole();
+        $std_user->firstName = $user->getFirstName();
+        $std_user->lastName = $user->getLastName();
+        // $std_user->profilePic = $user->getProfilePic();
+        $std_user->signUpDate = $user->getSignUpDate();
+        $std_user->gender = $user->getGender();
+        $std_user->phoneNumber = $user->getPhoneNumber();
+        $std_user->email = $user->getEmail();
+
+        return $std_user;
+
+    }
+
+    private static function returnError($e){
         $error = new stdClass;
-        $error->error = "No user with ID:".$id;
-
+        $error->error = $e->getMessage();
         return $error;
-
     }
 
-    public static function updateCustomers($profile){
 
-        self::refreshCustomers();
-
-        //Modifying Customer data
-        foreach(self::$customers as $customer){
-            if($customer->getUserID() == $profile->userID){
-                foreach($profile as $prop => $value) {
-                    if(property_exists($customer, $prop)){
-                        self::setCustomerProperty($customer, $prop, $value);
-                    }
-                }
-            }
-        }
-
-        // Modifying user data
-        foreach(self::$users as $user){
-            if($user->getUserID() == $profile->userID){
-                foreach($profile as $prop => $value){
-                    if(property_exists($user, $prop)){
-                        self::setUserProperty($user, $prop, $value);
-                    }
-                }
-            }
-        }
-
-        // Convert each customer into string
-        $customer_str = "userID,address";
-
-        foreach(self::$customers as $c){
-            $customer_str .= "\n".
-            $c->getUserID().",".
-            $c->getAddress();
-        }
-
-        // convert each user into string
-        $user_str = "userID,password,role,firstName,lastName,profilePic,signUpDate,gender,phoneNumber,email";
-
-        foreach(self::$users as $u){
-            $user_str .= "\n".
-            $u->getUserID().",".
-            $u->getPassword().",".
-            $u->getRole().",".
-            $u->getFirstName().",".
-            $u->getLastName().",".
-            $u->getProfilePic().",".
-            $u->getSignUpDate().",".
-            $u->getGender().",".
-            $u->getPhoneNumber().",".
-            $u->getEmail();
-        }
-
-        // paths to the csv files
-        $customer_data_path = realpath("../../data/customer.data.csv");
-        $user_data_path = realpath("../../data/user.data.csv");
-        
-        // save them in file
-        FileService::writeFile($customer_data_path, $customer_str);
-        FileService::writeFile($user_data_path, $user_str);
-
-        return $profile;
-
-    }
-
-    private static function setCustomerProperty(&$customer, $property, $value){
-        
-        switch ($property){
-
-            case "userID":
-                $customer->setUserID($value);
-            break;
-            case "address":
-                $customer->setAddress($value);
-            break;
-
-        }
-
-    }
-
-    private static function setUserProperty(&$user, $property, $value){
-
-        switch ($property){
-
-            case "userID":
-                $user->setUserID($value);
-            break;
-            case "password":
-                $user->setPassword($value);
-            break;
-            case "role":
-                $user->setRole($value);
-            break;
-            case "firstName":
-                $user->setFirstName($value);
-            break;
-            case "lastName":
-                $user->setLastName($value);
-            break;
-            case "profilePic":
-                $user->setProfilePic($value);
-            break;
-            case "signUpDate":
-                $user->setSignUpDate($value);
-            break;
-            case "gender":
-                $user->setGender($value);
-            break;
-            case "phoneNumber":
-                $user->setPhoneNumber($value);
-            break;
-            case "email":
-                $user->setEmail($value);
-            break;
-        }
-
-    }
 
 }
 
