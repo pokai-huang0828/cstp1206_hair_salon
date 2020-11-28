@@ -35,6 +35,30 @@ CREATE TABLE Customers (
     ON DELETE CASCADE
 );
 
+CREATE TABLE Bookings (
+    bookingID INT AUTO_INCREMENT PRIMARY KEY,
+    customerID INT NOT NULL,
+    stylistID INT NOT NULL,
+    date DATE NOT NULL,
+    time TIME NOT NULL,
+    comment VARCHAR(100) DEFAULT "",
+    status ENUM('pending', 'accepted', 'denied') DEFAULT 'pending', 
+    FOREIGN KEY (customerID) REFERENCES Users(userID)
+    ON DELETE CASCADE,
+    FOREIGN KEY (stylistID) REFERENCES Users(userID)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE Ratings (
+    customerID INT NOT NULL,
+    stylistID INT NOT NULL,
+    rating FLOAT NOT NULL, 
+    FOREIGN KEY (customerID) REFERENCES Users(userID)
+    ON DELETE CASCADE,
+    FOREIGN KEY (stylistID) REFERENCES Users(userID)
+    ON DELETE CASCADE
+);
+
 INSERT INTO Users (password, role, firstName, lastName, 
 profilePic, signUpDate, gender, phoneNumber, email)
 VALUES
@@ -53,3 +77,23 @@ INSERT INTO Customers (userID, address)
 VALUES
 (3, "1234 Victory Rd"),
 (4,"2345 Deep Rd");
+
+INSERT INTO Bookings (
+    customerID, 
+    stylistID, 
+    date, 
+    time, 
+    comment
+)
+VALUES
+(3, 1, '2020-11-27', '13:00:00', 'give me a pretty haircut'),
+(4, 1, '2020-11-27', '13:00:00', 'give me a pretty haircut'),
+(3, 2, '2020-11-27', '13:00:00', 'give me a pretty haircut'),
+(4, 2, '2020-11-27', '13:00:00', 'give me a pretty haircut');
+
+INSERT INTO Ratings (customerID, stylistID, rating)
+VALUES
+(3, 1, 5.0),
+(3, 2, 5.0),
+(4, 1, 5.0),
+(4, 2, 5.0);
