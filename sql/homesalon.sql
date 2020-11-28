@@ -19,7 +19,7 @@ CREATE TABLE Users (
 CREATE TABLE Stylists (
     userID INT NOT NULL,
     professionalExperience INT DEFAULT 0,
-    rating INT DEFAULT 0,
+    rating FLOAT DEFAULT 0,
     serviceLocation VARCHAR(10) DEFAULT '',
     category VARCHAR(10) DEFAULT '',
     priceList VARCHAR(100) DEFAULT '',
@@ -42,7 +42,7 @@ CREATE TABLE Bookings (
     date DATE NOT NULL,
     time TIME NOT NULL,
     comment VARCHAR(100) DEFAULT "",
-    status ENUM('pending', 'accepted', 'denied') DEFAULT 'pending', 
+    status ENUM('pending', 'accepted', 'declined') DEFAULT 'pending', 
     FOREIGN KEY (customerID) REFERENCES Users(userID)
     ON DELETE CASCADE,
     FOREIGN KEY (stylistID) REFERENCES Users(userID)

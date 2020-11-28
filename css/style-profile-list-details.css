@@ -83,6 +83,24 @@ body {
     margin-bottom: 10%;
 }
 
+/* Rating field */
+
+#ratingInputDiv{
+    width: 100%;
+    /* display:none; */
+    background-color: rgba(233, 233, 233, 0.767);
+    border-radius: 2%;
+    margin: 2%;
+}
+#ratingInput{
+    width: 10%;
+    margin: 0 auto;
+}
+#ratingSubmitText{
+    font-size:0.8em;
+    color:red;
+}
+
 
 
 

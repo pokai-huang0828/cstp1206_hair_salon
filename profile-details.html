@@ -131,9 +131,25 @@
                   />
                   </object>
                   <h5 class="bold">Hi, My Name is <br><span id="name">Popo!</span></h5>
-                  <button class="btn disabled">BOOK ME!</button>
+                  <button class="btn">BOOK ME!</button>
                   <p>Member Since: <span id="signUpDate"></span></p>
-                  <p>Rating: <span id="rating"></span></p>
+                  
+                  <p>Rating: <span id="rating"></span> 
+                    <i class="material-icons tiny" onclick="displayRatingInput()">border_color</i>
+                  </p>
+                  
+                  <div class="container" id="ratingInputDiv">
+                    Rate Score(1-5):
+                    <input type="number" value=5 max=5 min=0 id="ratingInput">
+                    <button id="ratingSubmitButton" 
+                        class="btn-floating btn-small waves-effect waves-light green" 
+                        stylistid
+                        onclick="submitRating()">
+                    <i class="material-icons tiny">check</i>
+                    </button>
+                    <div id="ratingSubmitText"></div>
+                  </div>
+
                 </div>
 
                 <div class="col s12 m8">
