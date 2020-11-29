@@ -26,7 +26,7 @@
 .profile-search-container .profile_pic_div
 {
     border-radius: 2%;
-    min-height: 300px;
+    min-height: 200px;
     background-image: url('/img/defaultProfilePic.png');
     background-position: center;
     background-repeat: no-repeat; 
