@@ -74,6 +74,21 @@ body {
     margin: 1% auto !important;
 }
 
+.profile-details-container #profile_pic_div
+{
+    border-radius: 2%;
+    min-height: 150px;
+    background-image: url('/img/defaultProfilePic.png');
+    background-position: center;
+    background-repeat: no-repeat; 
+    background-size: contain; 
+}
+
+.profile-details-container #profile_pic
+{
+    border-radius: 2%;
+}
+
 .profile-detail-table
 {
     margin:0px;

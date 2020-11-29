@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     var datepicker = document.querySelectorAll('.datepicker');
     M.Datepicker.init(datepicker, {
         format: "yyyy-mm-dd"  ,
-        minDate: new Date()
+        minDate: new Date() 
     });
     
     // Config Timepicker

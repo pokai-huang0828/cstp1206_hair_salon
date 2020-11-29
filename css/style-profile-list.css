@@ -23,6 +23,16 @@
     background-size: cover;
 }
 
+.profile-search-container .profile_pic_div
+{
+    border-radius: 2%;
+    min-height: 300px;
+    background-image: url('/img/defaultProfilePic.png');
+    background-position: center;
+    background-repeat: no-repeat; 
+    background-size: contain; 
+}
+
 .profile-search-container .selection {
     background-color: rgba(247, 246, 244, 0.651);
     width: 70%;

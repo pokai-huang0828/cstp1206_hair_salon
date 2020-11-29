@@ -184,14 +184,11 @@
             <div id="profile">
               <div class="row">
                 <div class="profile-panel col s12 m4 center z-depth-1">
-                  <object width=150 data="img/defaultProfilePic.png" type="image/png">
-                  <img
-                    class="responsive-img circle"
-                    id="profile_pic"
-                    alt="profile-pic"
-                    width =100
-                  />
-                  </object>
+                  <!-- <object width=150 data="img/defaultProfilePic.png" type="image/png"> -->
+                  <div id="profile_pic_div">
+                    <img class="responsive-img" id="profile_pic"/>
+                  </div>
+                  <!-- </object> -->
                   <h5 class="bold">Hi, My Name is <br><span id="name">Popo!</span></h5>
                   <button id="bookingFormToggle" class="btn userOnly bookingFormToggle" onclick="displayBookingForm()">BOOK ME!</button>
                   <p>Member Since: <span id="signUpDate"></span></p> 
