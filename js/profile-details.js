@@ -1,5 +1,23 @@
-document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener('DOMContentLoaded', async function() { 
+
+    // Config Datepicker
+    var datepicker = document.querySelectorAll('.datepicker');
+    M.Datepicker.init(datepicker, {
+        format: "yyyy-mm-dd"  ,
+        minDate: new Date()
+    });
     
+    // Config Timepicker
+    var timepicker = document.querySelectorAll('.timepicker');
+    M.Timepicker.init(timepicker, {
+        twelveHour: false 
+    });
+    
+    // Toggle Booking Form Model
+    $(".bookingFormToggle").click(function(){
+        $("#BookingFormDiv").slideToggle();
+    });
+
     // get userID from param
     let id = getParamID();
 
@@ -37,12 +55,14 @@ function findProfileByID(data, id){
 }
 
 function displayError(){
+
     document.getElementsByClassName("card")[0].style.display = "none";
     document.getElementsByClassName("backButton")[0].style.display = "none";
     document.getElementsByClassName("error")[0].style.display = "block";
 };
 
 function displayProfile(profile){
+
     document.getElementById("profile_pic").src = profile.profilePic;
     document.getElementById("name").innerText = `${profile.firstName} ${profile.lastName}`;
     document.getElementById("signUpDate").innerText = profile.signUpDate;
@@ -58,7 +78,16 @@ function displayProfile(profile){
     
     // set stylistID to ratingInput button 
     document.getElementById("ratingSubmitButton").stylistID = profile.userID;
+    
+    // set stylistID to BOOK ME button
+    document.getElementById("bookMeButton").stylistID = profile.userID;
 
+    // turn off bookme and rating if this is a stylist
+    if(sessionStorage.getItem("role") == "stylist"){
+        document.getElementById("bookingFormToggle").style.display = "none";
+        document.getElementById("displayRatingInputIcon").style.display = "none";
+    };
+    
 };
 
 function goBack(){
@@ -76,13 +105,9 @@ function displayRatingInput(){
 
 async function submitRating(){
 
-    // var customerID;
     var rating = document.getElementById("ratingInput").value;
     var stylistID = document.getElementById("ratingSubmitButton").stylistID;
-
-    // Hard Coding CustomerID for now!!!!!!!!!!!!!!!!
-    // var customerID = sessionStorage.get("userID");
-    var customerID = 3;
+    var customerID = sessionStorage.getItem("userID");
 
     var fileName = "http://localhost/inc/utilities/RatingController.php";
 
@@ -96,5 +121,50 @@ async function submitRating(){
     }).then((data)=> data.json()); 
 
     document.getElementById("ratingSubmitText").innerText = "Submitted";
+
+}
+
+// Bookings
+
+async function customerCreateBooking() {
+
+    var role = sessionStorage.getItem("role");
+    var customerID = sessionStorage.getItem("userID");
+    var stylistID = document.getElementById("bookMeButton").stylistID;
+    var date = document.getElementById("bookingDate").value;
+    var time = document.getElementById("bookingTime").value;
+    var comment = document.getElementById("bookingComment").value;
+    
+    // Validate booking date and time
+    if (date == "" || time == "") {
+        document.getElementById("bookingFormError").innerText = "Must fill out booking date and time.";
+        return;
+    }
+    
+    var fileName = "http://localhost/inc/utilities/BookingController.php";
+    
+    let res = await fetch(fileName, {
+        method: "POST",
+        body: JSON.stringify({
+            role,
+            customerID, 
+            stylistID,
+            date,
+            time,
+            comment
+        })
+    }).then((data)=> data.json()); 
+    
+    // Display Success or Error Message
+    if (res.error){
+        document.getElementById("bookingFormSuccess").innerText = "";
+        document.getElementById("bookingFormError").innerText = res.error;
+    } else {
+        document.getElementById("bookingFormError").innerText = "";
+        document.getElementById("bookingFormSuccess").innerText = `Booking Success! Here Your bookingID: ${res.bookingID}`;
+    }
+
+    // refresh my booking
+    displayBookings(customerID, role);
 
 }

@@ -87,7 +87,7 @@ body {
 
 #ratingInputDiv{
     width: 100%;
-    /* display:none; */
+    display:none;
     background-color: rgba(233, 233, 233, 0.767);
     border-radius: 2%;
     margin: 2%;
@@ -101,6 +101,50 @@ body {
     color:red;
 }
 
+/* Booking Form */
+
+/* Booking List */
+
+#BookingFormDiv {
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    margin: 0 auto;
+    z-index: 3;
+    top: 15%;
+    left: 10%;
+    padding: 3%;
+    border-radius: 1%;
+    display: none;
+    background-color: rgba(234, 236, 236, 0.904);
+    overflow: auto;
+  }
+  
+  #bookingFormDiv .collection.with-header .collection-header,
+  #bookingFormDiv .collection-item
+  {
+      background-color: rgba(234, 236, 236, 0.329);
+  }
+
+  .bookingFormToggle {
+    margin: 1% 0 3% 0;
+  }
+  
+  #bookingFormDiv h2 {
+    margin: 1% 0 3% 0;
+  }
+  
+  #bookingFormDiv .cross {
+    font-size: 2em;
+    line-height: 1%;
+    padding-right: 5%;
+  }
+  
+  #bookingFormDiv .cross:hover {
+    color: rgb(159, 160, 161);
+    cursor: pointer;
+  }
+  
 
 
 

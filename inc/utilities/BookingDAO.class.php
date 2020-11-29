@@ -12,11 +12,23 @@ class BookingDAO {
         
         try{
 
-            $customerBookingsSql = "SELECT * FROM bookings
-                    WHERE customerID = :userID;";
+            $customerBookingsSql = "SELECT b.bookingID, b.customerID, b.stylistID, 
+                                    b.date, b.time, b.comment, b.status, 
+                                    u.firstName, u.lastName
+                                    FROM bookings as b
+                                    JOIN users as u
+                                    ON b.stylistID = u.userID
+                                    WHERE customerID = :userID
+                                    ORDER BY b.date;";
 
-            $stylistBookingsSql = "SELECT * FROM bookings
-                    WHERE stylistID = :userID;";
+            $stylistBookingsSql = "SELECT b.bookingID, b.customerID, b.stylistID, 
+                                    b.date, b.time, b.comment, b.status, 
+                                    u.firstName, u.lastName 
+                                    FROM bookings as b
+                                    JOIN users as u
+                                    ON b.customerID = u.userID
+                                    WHERE stylistID = :userID
+                                    ORDER BY b.date;";
 
             $sql = ($role == "customer") ? $customerBookingsSql : $stylistBookingsSql;
     
@@ -24,9 +36,11 @@ class BookingDAO {
             self::$_db->bind(":userID", $userID);
             self::$_db->execute();
             
-            $res = self::$_db->resultSet();
+            $res = self::$_db->getResults();
+
+            // var_dump($res);
     
-            return self::convertBookingToStdClass($res);
+            return $res;
 
         } catch(Exception $e){
             return self::returnError($e);
@@ -92,7 +106,7 @@ class BookingDAO {
             } else {
 
                 // return error msg
-                return self::returnErrorMessage("Could not cancel because booking is in status: ".$status);
+                return self::returnErrorMessage("Could not cancel bookingID ".$bookingID." because it is in status: ".$status);
             }
     
         } catch(Exception $e){

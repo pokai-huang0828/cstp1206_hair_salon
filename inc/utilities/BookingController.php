@@ -16,7 +16,11 @@ switch($_SERVER["REQUEST_METHOD"]){
 
     case "GET":
 
-        $res = BookingDAO::getBookings($requestData->userID, $requestData->role);
+        // Get queries string
+        $queries = array();
+        parse_str($_SERVER['QUERY_STRING'], $queries);
+
+        $res = BookingDAO::getBookings($queries["userID"], $queries["role"]);
         echo json_encode($res);
 
     break;

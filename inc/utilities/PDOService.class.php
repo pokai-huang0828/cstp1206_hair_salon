@@ -90,6 +90,10 @@ class PDOService {
         return $this->_pstmt->fetchAll(PDO::FETCH_CLASS, $this->_className);
     }
 
+    public function getResults() {
+        return $this->_pstmt->fetchAll();
+    }
+
     //Return when expecting one object back
     public function singleResult(){
         $this->_pstmt->setFetchMode(PDO::FETCH_CLASS, $this->_className);
