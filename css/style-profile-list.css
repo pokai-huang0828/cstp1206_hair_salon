@@ -18,9 +18,9 @@
 {
     min-height: 105%;
     width: 100%;
-    background-image: url("/img/banner5.jpg");
+    /* background-image: url("/img/banner5.jpg");
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: cover; */
 }
 
 .profile-search-container .profile_pic_div
