@@ -58,7 +58,7 @@ function displayList(data){
     for(var p in data){
         
         var root_div = document.createElement("div");
-        root_div.className = "col s12 m6 l3 profile_root_div";
+        root_div.className = "col s12 m4 l3 profile_root_div";
         
         var card_div = document.createElement("div");
         card_div.className = "card";
