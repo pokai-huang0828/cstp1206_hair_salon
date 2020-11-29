@@ -62,8 +62,8 @@ CREATE TABLE Ratings (
 INSERT INTO Users (password, role, firstName, lastName, 
 profilePic, signUpDate, gender, phoneNumber, email)
 VALUES
-("123", "stylist", "Popo", "Haung", "", "2020-11-12", "male", "123456789", "pokai@email.com"), 
-("123", "stylist", "Harleen", "Jhamat", "", "2020-11-13", "female", "123456789", "harleen@email.com"),
+("123", "stylist", "Popo", "Haung", "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500", "2020-11-12", "male", "123456789", "pokai@email.com"), 
+("123", "stylist", "Harleen", "Jhamat", "https://images.pexels.com/photos/5692127/pexels-photo-5692127.jpeg?", "2020-11-13", "female", "123456789", "harleen@email.com"),
 ("123", "customer", "Egg", "Coffee", "", "2020-11-13", "male", "123456789", "egg@email.com"),
 ("123", "customer", "Ben", "Wood", "", "2020-11-13", "male", "123456789", "ben@email.com");
 
