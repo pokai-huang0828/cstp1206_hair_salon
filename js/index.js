@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     M.AutoInit();
 
-    var elems = document.querySelectorAll('.slider');
-    var instances = M.Slider.init(elems, {"height":725});
+    var slider = document.querySelectorAll('.slider');
+    var instances = M.Slider.init(slider, {"height":725});
 
     $(".loginToggle").click(function(){
         $("#loginFormDiv").slideToggle();
